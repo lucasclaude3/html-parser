@@ -1,0 +1,8 @@
+{
+  "name": "html-parser",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:lucasclaude3/html-parser.git",
+  "author": "kahlua <lucasclaude3@gmail.com>",
+  "license": "MIT"
+}
