@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "git@github.com:lucasclaude3/html-parser.git",
   "author": "kahlua <lucasclaude3@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
 }
