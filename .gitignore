@@ -1,2 +1,4 @@
 node_modules/*
 test-formatted.html
+result.json
+todo.md
