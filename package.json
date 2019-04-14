@@ -9,6 +9,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "bluebird": "^3.5.4",
     "jest": "^24.7.1",
     "jsdom": "^14.0.0",
     "moment": "^2.24.0"
