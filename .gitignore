@@ -1,4 +1,4 @@
 node_modules/*
-formatted-test.html
-parsed-test.json
+formatted-test*.html
+parsed-test*.json
 todo.md

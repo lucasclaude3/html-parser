@@ -78,39 +78,45 @@ function productCallback(document, product) {
 }
 
 function parseHtml(formattedHtml) {
-  const dom = new JSDOM(formattedHtml);
-  const { document } = dom.window;
+  try {
+    const dom = new JSDOM(formattedHtml);
+    const { document } = dom.window;
 
-  const code = document.querySelector('.link.aftersale-web').innerHTML.trim().match(/pnrRef=([^& ]*)/)[1];
-  const name = getContentByQuerySelector(document, '.pnr-name .pnr-info');
-  const price = parseFloat(getContentByQuerySelector(document, '.total-amount .very-important').replace(/[^\d,.]/g, '').replace(/,/g, '.'));
+    const code = document.querySelector('.link.aftersale-web').innerHTML.trim().match(/pnrRef=([^& ]*)/)[1];
+    const name = getContentByQuerySelector(document, '.pnr-name .pnr-info');
+    const price = parseFloat(getContentByQuerySelector(document, '.total-amount .very-important').replace(/[^\d,.]/g, '').replace(/,/g, '.'));
 
-  const products = document.querySelectorAll('.product-details');
-  const roundTrips = Array.prototype.map.call(products, productCallback.bind(null, document));
+    const products = document.querySelectorAll('.product-details');
+    const roundTrips = Array.prototype.map.call(products, productCallback.bind(null, document));
 
-  const priceElements = document.querySelectorAll('.product-header>tbody>tr>td:last-child, .product-header>.amount');
-  const prices = Array.prototype.map.call(priceElements, priceElement => ({ value: parseFloat(priceElement.innerHTML.trim().replace(/[^\d,]/, '').replace(/,/, '.')) }));
+    const priceElements = document.querySelectorAll('.product-header>tbody>tr>td:last-child, .product-header>.amount');
+    const prices = Array.prototype.map.call(priceElements, priceElement => ({ value: parseFloat(priceElement.innerHTML.trim().replace(/[^\d,]/, '').replace(/,/, '.')) }));
 
-  const result = {
-    status: 'ok',
-    result: {
-      trips: [
-        {
-          code,
-          name,
-          details: {
-            price,
-            roundTrips,
+    return {
+      status: 'ok',
+      result: {
+        trips: [
+          {
+            code,
+            name,
+            details: {
+              price,
+              roundTrips,
+            },
           },
+        ],
+        custom: {
+          prices,
         },
-      ],
-      custom: {
-        prices,
       },
-    },
-  };
-
-  return result;
+    };
+  } catch (error) {
+    return {
+      status: 'ko',
+      errorMessage: error.message,
+      errorStack: error.stack,
+    };
+  }
 }
 
 exports.loadAndParseHtml = filename => fs.readFileAsync(filename, 'utf8')
